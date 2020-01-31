@@ -4,13 +4,18 @@
 
 // Utils
 import { debounce } from '../common/debounce'
+import {
+  getLoadTimeDataString,
+  getLoadTimeDataBoolean,
+  getChromeDataBoolean
+} from '../common/loadTimeDataUtils'
 
 const keyName = 'new-tab-data'
 
 const defaultState: NewTab.State = {
   initialDataLoaded: false,
-  textDirection: window.loadTimeData.getString('textdirection'),
-  featureFlagBraveNTPBrandedWallpaper: window.loadTimeData.getBoolean('featureFlagBraveNTPBrandedWallpaper'),
+  textDirection: getLoadTimeDataString('textdirection'),
+  featureFlagBraveNTPBrandedWallpaper: getLoadTimeDataBoolean('featureFlagBraveNTPBrandedWallpaper'),
   showBackgroundImage: false,
   showStats: false,
   showClock: false,
@@ -23,7 +28,7 @@ const defaultState: NewTab.State = {
   pinnedTopSites: [],
   gridSites: [],
   showEmptyPage: false,
-  isIncognito: chrome.extension.inIncognitoContext,
+  isIncognito: getChromeDataBoolean('inIncognitoContext'),
   useAlternativePrivateSearchEngine: false,
   isTor: false,
   isQwant: false,
@@ -55,9 +60,9 @@ const defaultState: NewTab.State = {
   }
 }
 
-if (chrome.extension.inIncognitoContext) {
-  defaultState.isTor = window.loadTimeData.getBoolean('isTor')
-  defaultState.isQwant = window.loadTimeData.getBoolean('isQwant')
+if (getChromeDataBoolean('inIncognitoContext')) {
+  defaultState.isTor = getLoadTimeDataBoolean('isTor')
+  defaultState.isQwant = getLoadTimeDataBoolean('isQwant')
 }
 
 const getPersistentData = (state: NewTab.State): NewTab.PersistentState => {
